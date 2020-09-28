@@ -18,6 +18,7 @@
         'data/sale_exception_data.xml',
         'wizard/sale_exception_confirm_view.xml',
         'views/sale_view.xml',
+        'security/ir.model.access.csv',
     ],
     'demo': [
         'demo/sale_exception_demo.xml',
