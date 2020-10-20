@@ -23,7 +23,9 @@ class AccountMove(models.Model):
             lambda am: am.move_type in ["out_invoice", "out_refund"]
         ):
             if not record.partner_id:
-                record.sale_type_id = self.env["sale.order.type"].search([], limit=1)
+                record.sale_type_id = self.env["sale.order.type"].search(
+                    [("company_id", "=", record.company_id.id)], limit=1
+                )
             else:
                 sale_type = (
                     record.partner_id.with_company(record.company_id.id).sale_type
@@ -31,7 +33,7 @@ class AccountMove(models.Model):
                         record.company_id.id
                     ).sale_type
                 )
-                if sale_type:
+                if sale_type and sale_type.company_id == record.company_id:
                     record.sale_type_id = sale_type
 
     @api.onchange("sale_type_id")
