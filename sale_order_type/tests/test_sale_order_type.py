@@ -26,9 +26,28 @@ class TestSaleOrderType(common.TransactionCase):
                 "padding": 3,
             }
         )
+
+        account_id = self.env["account.account"].create(
+            {
+                "name": "Product Sales",
+                "code": "PSales",
+                "user_type_id": self.ref("account.data_account_type_revenue"),
+            }
+        )
+
+        journal_id = self.env["account.journal"].create(
+            {
+                "type": "sale",
+                "name": "Sales Journal",
+                "code": "sales",
+                "default_account_id": account_id.id,
+            }
+        )
+
         self.journal = self.env["account.journal"].search(
             [("type", "=", "sale")], limit=1
         )
+
         self.default_sale_type_id = self.env["sale.order.type"].search([], limit=1)
         self.warehouse = self.env["stock.warehouse"].create(
             {"name": "Warehouse Test", "code": "WT"}
